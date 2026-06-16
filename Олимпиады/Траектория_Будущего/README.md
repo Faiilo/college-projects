@@ -5,7 +5,7 @@
 ИС-24
 
 ## Этапы участия
-# Astra Linux
+### Astra Linux
 1. Отборочный этап
 
 ### RED OS
