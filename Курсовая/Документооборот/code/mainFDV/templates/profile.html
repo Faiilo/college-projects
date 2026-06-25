@@ -1,0 +1,293 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static '3643772-archive-archives-document-folder-open_113445.ico' %}">
+    <title>Профиль практики</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(100deg, #dddddd 0%, #424242 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            padding: 30px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .form-title {
+            color: #333;
+            font-size: 28px;
+        }
+        .user-info {
+            color: #666;
+        }
+        .user-info a {
+            color: #424242;
+            text-decoration: none;
+            margin-left: 10px;
+        }
+        .user-info a:hover {
+            text-decoration: underline;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        legend {
+            padding: 0 10px;
+            font-weight: bold;
+            color: #424242;
+            font-size: 18px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #424242;
+        }
+        button {
+            background: #424242;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            background: #5a5a5a;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #28a745;
+        }
+        .note {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            color: #666;
+            text-align: center;
+        }
+        .document-generation {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .document-generation h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .doc-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .doc-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+        .doc-btn:hover {
+            background: #218838;
+        }
+        .doc-btn-disabled {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="form-title">Профиль практики</h1>
+            <div class="user-info">
+                <span>Пользователь: <strong>{{ user.username }}</strong> | </span>
+                <a href="/logout/">Выйти</a>
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <fieldset>
+                <legend>Личная информация</legend>
+                <div class="form-group">
+                    <label for="familia">Фамилия:</label>
+                    <input type="text" id="familia" name="familia" value="{{ user_report.familia|default:'' }}" placeholder="Введите фамилию">
+                </div>
+                <div class="form-group">
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="name" value="{{ user_report.name|default:'' }}" placeholder="Введите имя">
+                </div>
+                <div class="form-group">
+                    <label for="otchestvo">Отчество:</label>
+                    <input type="text" id="otchestvo" name="otchestvo" value="{{ user_report.otchestvo|default:'' }}" placeholder="Введите отчество">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Информация о практике</legend>
+                <div class="form-group">
+                    <label for="tip">Тип практики:</label>
+                    <select id="tip" name="tip">
+                        <option value="">-- Не выбрано --</option>
+                        {% for type in prac_types %}
+                            <option value="{{ type.type_name }}" {% if user_report.prac_type and user_report.prac_type.type_name == type.type_name %}selected{% endif %}>
+                                {{ type.type_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="module">Модуль:</label>
+                    <input type="text" id="module" name="module" value="{{ user_report.module|default:'' }}" placeholder="Введите модуль">
+                </div>
+                <div class="form-group">
+                    <label for="specialization">Специализация:</label>
+                    <input type="text" id="specialization" name="specialization" value="{{ user_report.specialization|default:'' }}" placeholder="Введите специализацию">
+                </div>
+                <div class="form-group">
+                    <label for="kurs">Курс:</label>
+                    <select id="kurs" name="kurs">
+                        <option value="">-- Выберите курс --</option>
+                        <option value="1" {% if user_report.kurs == 1 or user_report.kurs == "1" %}selected{% endif %}>1 курс</option>
+                        <option value="2" {% if user_report.kurs == 2 or user_report.kurs == "2" %}selected{% endif %}>2 курс</option>
+                        <option value="3" {% if user_report.kurs == 3 or user_report.kurs == "3" %}selected{% endif %}>3 курс</option>
+                        <option value="4" {% if user_report.kurs == 4 or user_report.kurs == "4" %}selected{% endif %}>4 курс</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="group">Группа:</label>
+                    <select id="group" name="group">
+                        <option value="">-- Выберите группу --</option>
+                        <option value="ИС-24" {% if user_report.group == "ИС-24" %}selected{% endif %}>ИС-24</option>
+                        <option value="ОИБ-24" {% if user_report.group == "ОИБ-24" %}selected{% endif %}>ОИБ-24</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mesto">Место прохождения практики:</label>
+                    <input type="text" id="mesto" name="mesto" value="{{ user_report.mesto|default:'' }}" placeholder="Например: ГБПОУ МО Люберецкий техникум имени Героя Советского Союза, лётчика-космонавта Ю. А. Гагарина">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Адрес прохождения практики:</label>
+                    <input type="text" id="address" name="address" value="{{ user_report.address|default:'' }}" placeholder="Например: г. Дзержинский, ул.Академика Жукова, д.24">
+                </div>
+                <div class="form-group">
+                    <label for="mdk">МДК (каждый с новой строки):</label>
+                    <textarea id="mdk" name="mdk" rows="6" placeholder="Пример:
+                МДК. 01.01 Разработка программных модулей
+                МДК. 01.02 Поддержка и тестирование программных модулей
+                МДК. 01.03 Разработка мобильных приложений
+                МДК. 01.04 Системное программирование" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: monospace;">{{ user_report.mdk|default:'' }}</textarea>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Период практики</legend>
+                <div class="form-group">
+                    <label for="begin_date">Дата начала:</label>
+                    <input type="date" id="begin_date" name="begin_date" value="{{ begin_date_for_input }}">
+                </div>
+                <div class="form-group">
+                    <label for="finish_date">Дата окончания:</label>
+                    <input type="date" id="finish_date" name="finish_date" value="{{ finish_date_for_input }}">
+                </div>
+                <div class="form-group">
+                    <label for="hours">Объём практики (часов):</label>
+                    <input type="number" id="hours" name="hours" value="{{ user_report.hours|default:36 }}" placeholder="Количество часов" min="1" max="1000">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Руководство практикой</legend>
+                <div class="form-group">
+                    <label for="head1">Руководитель от техникума (1):</label>
+                    <input type="text" id="head1" name="head1" value="{{ user_report.head1|default:'' }}" placeholder="ФИО руководителя от техникума">
+                </div>
+                <div class="form-group">
+                    <label for="head2">Руководитель от техникума (2):</label>
+                    <input type="text" id="head2" name="head2" value="{{ user_report.head2|default:'' }}" placeholder="ФИО руководителя от техникума">
+                </div>
+                <div class="form-group">
+                    <label for="ruc_pract">Руководитель от организации:</label>
+                    <input type="text" id="ruc_pract" name="ruc_pract" value="{{ user_report.ruc_pract|default:'' }}" placeholder="ФИО руководителя от организации">
+                </div>
+                <div class="form-group">
+                    <label for="year">Год:</label>
+                    <input type="number" id="year" name="year" value="{{ user_report.year|default:'' }}" placeholder="Год">
+                </div>
+            </fieldset>
+            
+            <button type="submit">Сохранить изменения</button>
+
+            <div class="document-generation">
+            <h3>Генерация документов</h3>
+            <div class="doc-buttons">
+                <a href="{% url 'generate_all' %}" class="doc-btn" style="background: #007bff; font-size: 16px; padding: 12px 30px;">
+                    📄 Скачать все документы (Титульный лист, Задание, Дневник)
+                </a>
+            </div>
+            <p class="note"><small>Все документы будут упакованы в ZIP архив. После скачивания распакуйте архив.</small></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

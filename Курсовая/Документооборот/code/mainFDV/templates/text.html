@@ -1,0 +1,45 @@
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+from .models import DatasetOtchet, PracType, DocumentTemplate
+from django import forms
+
+class DatasetOtchetAdmin(admin.ModelAdmin):
+    list_display = ('id_dataset', 'familia', 'name', 'otchestvo', 'group', 'user', 'prac_type')
+    list_filter = ('prac_type', 'kurs', 'year')
+    search_fields = ('familia', 'name', 'otchestvo', 'group')
+    raw_id_fields = ('user',)
+    fieldsets = (
+        ('Личная информация', {
+            'fields': ('familia', 'name', 'otchestvo')
+        }),
+        ('Информация о практике', {
+            'fields': ('prac_type', 'module', 'specialization', 'kurs', 'group')
+        }),
+        ('Период практики', {
+            'fields': ('date_begin', 'date_finish', 'year')
+        }),
+        ('Руководство', {
+            'fields': ('head1', 'head2', 'ruc_pract')
+        }),
+        ('Пользователь', {
+            'fields': ('user',)
+        }),
+    )
+
+class PracTypeAdmin(admin.ModelAdmin):
+    list_display = ('id_prac_type', 'type_name')
+    search_fields = ('type_name',)
+
+class DocumentTemplateAdmin(admin.ModelAdmin):
+    list_display = ('doc_type', 'name', 'uploaded_at', 'updated_at')
+    list_filter = ('doc_type',)
+    fieldsets = (
+        (None, {
+            'fields': ('doc_type', 'name', 'template_file')
+        }),
+    )
+
+admin.site.register(DatasetOtchet, DatasetOtchetAdmin)
+admin.site.register(PracType, PracTypeAdmin)
+admin.site.register(DocumentTemplate, DocumentTemplateAdmin)
