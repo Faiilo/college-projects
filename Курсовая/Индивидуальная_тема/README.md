@@ -5,11 +5,11 @@
 
 ## Технологии
 - Laravel
-- MySQL
+- Sqlite
+- Render
 
 ## Структура
-- `/code` — исходный код
-- `/database/backup.sql` — дамп БД
+Весь код доступен в отдельном репозитории: https://github.com/Faiilo/course-individual
 
 ## Статус
 ⬜ В процессе
