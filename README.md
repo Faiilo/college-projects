@@ -1,8 +1,8 @@
 # Мои проекты за семестр
 
 ## Ссылки
-- [Мой сайт-резюме](https://твой_логин.github.io/resume) (ссылка появится позже)
-- [Доска YouGile](https://yougile.com/...) (ссылка появится позже)
+- [Мой сайт-резюме](https://faiilo.github.io/resume/)
+- [Доска YouGile](https://ru.yougile.com/board/qugtrc39ljj3)
 
 ## Структура
 - [Курсовая](./Курсовая/)
