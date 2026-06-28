@@ -5,11 +5,10 @@
 
 ## Технологии
 - Django
-- PostgreSQL
+- Sqlite
 
 ## Структура
 - `/code` — исходный код
-- `/database/backup.sql` — дамп БД
 
 ## Статус
 ⬜ В процессе
