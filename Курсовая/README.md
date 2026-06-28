@@ -7,7 +7,7 @@
 2. [Индивидуальная тема на Laravel](./Индивидуальная_тема/) ⬜
 
 ## Отчёт
-[Ссылка на Google Диск] (добавить позже)
+[Ссылка на Google Диск](https://docs.google.com/document/d/1f4cFKYbQKaGXzqWOke3ol5eLNmnPEc57/edit?usp=sharing&ouid=115861759578952720803&rtpof=true&sd=true)
 
 ## Статус
 ⬜ В процессе
